@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import static be.vdab.jdbc.ConnectionUtils.*;
 
+
 public class ChangeStock2 {
     public static void main(String[] args) {
 

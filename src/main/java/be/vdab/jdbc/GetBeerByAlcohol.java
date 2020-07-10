@@ -4,21 +4,23 @@ import java.sql.*;
 
 import static be.vdab.jdbc.ConnectionUtils.*;
 
-public class AddBeer {
+public class GetBeerByAlcohol {
     public static void main(String[] args) {
         String sql =
-                "INSERT into beers (Name, Alcohol, Price, Stock, BrewerId, CategoryId) " +
-                        "VALUES ('DAGERAED', 12, 4, 24, 51, 18);";
+                "SELECT * FROM beers WHERE Alcohol = ?";
+
         try (Connection con = DriverManager.getConnection(
                 ADDRESS,
                 USER,
                 PASSWORD);
-             Statement stmt = con.createStatement()) {
-            stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = stmt.getGeneratedKeys();
+             PreparedStatement st = con.prepareStatement(sql);) {
 
+            float i = 5F;
+            st.setFloat(1, i);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getInt(1));
+                System.out.print(rs.getString("Name"));
+                System.out.println(rs.getFloat("Alcohol"));
             }
 
         } catch (SQLException e) {
