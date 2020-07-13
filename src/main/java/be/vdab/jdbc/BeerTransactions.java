@@ -1,7 +1,5 @@
 package be.vdab.jdbc;
 
-import com.mysql.cj.protocol.Resultset;
-
 import java.sql.*;
 
 import static be.vdab.jdbc.ConnectionUtils.*;
@@ -9,8 +7,8 @@ import static be.vdab.jdbc.ConnectionUtils.*;
 public class BeerTransactions {
 
     public static void main(String[] args) throws SQLException {
-        String sql1 = "UPDATE beers SET stock = 509999 where Name = 'Jupiler'";
-        String sql2 = "UPDATE beers SET stock = 100 where Name = 'Julipters'";
+        String sql1 = "UPDATE beers SET stock = 5098 where Name = 'Jupiler'";
+        String sql2 = "UPDATE beers SET stock = 100 where Na = 'Julipters'";
         String sql3 = "SELECT * FROM beers where name like 'Ju%'";
 
         try (Connection con = DriverManager.getConnection(
@@ -21,17 +19,18 @@ public class BeerTransactions {
                 con.setAutoCommit(false);
 
                 stmt.executeUpdate(sql1);
-                methodName(sql3);
+                print(sql3);
 
                 int i = stmt.executeUpdate(sql2);
                 System.out.println(i);
-                methodName(sql3);
+                print(sql3);
 
                 con.commit();
 
             } catch (SQLException throwables) {
                 con.rollback();
                 System.out.println("oeps, typo?");
+                print(sql3);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,7 +38,7 @@ public class BeerTransactions {
 
     }
 
-    private static void methodName(String sql3) {
+    private static void print (String sql3) {
         try (Connection con = DriverManager.getConnection(
                 ADDRESS,
                 USER,

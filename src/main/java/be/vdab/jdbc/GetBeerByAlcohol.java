@@ -15,12 +15,23 @@ public class GetBeerByAlcohol {
                 PASSWORD);
              PreparedStatement st = con.prepareStatement(sql);) {
 
-            float i = 5F;
-            st.setFloat(1, i);
+            float valueToFillInQuestioMark = 5F;
+            st.setFloat(1, valueToFillInQuestioMark);
             ResultSet rs = st.executeQuery();
+            System.out.println("These are all 5° beers");
             while (rs.next()) {
                 System.out.print(rs.getString("Name"));
                 System.out.println(rs.getFloat("Alcohol"));
+            }
+            //new alcohol level query
+            valueToFillInQuestioMark = 10F;
+            st.setFloat(1,valueToFillInQuestioMark);
+            ResultSet rs2 = st.executeQuery();
+            System.out.println("These are all 10° beers");
+            rs2.beforeFirst();
+            while (rs2.next()){
+                System.out.println(rs.getString("Name"));
+                System.out.println(rs.getString("Alcohol"));
             }
 
         } catch (SQLException e) {

@@ -15,8 +15,8 @@ public class BeerDaoImp implements BeerDAO {
 
     public Beer getBeerById(int id) throws BeerException {
         try (Connection con = getConnection();
-             PreparedStatement stmt = con
-                     .prepareStatement("SELECT * FROM beers WHERE ID = ?")) {
+             PreparedStatement stmt = con.prepareStatement(
+                     "SELECT * FROM beers WHERE ID = ?")) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -37,11 +37,49 @@ public class BeerDaoImp implements BeerDAO {
     }
 
     public Beer getBeersByAlcohol(float alcohol) throws BeerException {
-        return null;
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con
+                     .prepareStatement("SELECT * FROM beers WHERE Alcohol = ?")) {
+            stmt.setFloat(1, alcohol);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Beer beer = new Beer();
+                    beer.setId(rs.getInt("Id"));
+                    beer.setName(rs.getString("Name"));
+                    beer.setPrice(rs.getFloat("Price"));
+                    beer.setAlcohol(alcohol);
+                    beer.setStock(rs.getInt("Stock"));
+                    return beer;
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new BeerException();
+        }
     }
 
     public Beer getBeersByName(String name) throws BeerException {
-        return null;
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con
+                     .prepareStatement("SELECT * FROM beers WHERE Name = ?")) {
+            stmt.setString(1, name);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Beer beer = new Beer();
+                    beer.setId(rs.getInt("Id"));
+                    beer.setName(name);
+                    beer.setPrice(rs.getFloat("Price"));
+                    beer.setAlcohol(rs.getFloat("Alcohol"));
+                    beer.setStock(rs.getInt("Stock"));
+                    return beer;
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new BeerException();
+        }
     }
 
     public void updateBeer(Beer beer) throws BeerException {
@@ -58,7 +96,6 @@ public class BeerDaoImp implements BeerDAO {
             throw new BeerException();
         }
     }
-
 
 
     private Connection getConnection() throws SQLException {
